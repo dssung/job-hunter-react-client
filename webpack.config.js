@@ -1,52 +1,38 @@
-const htmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
-    //Bundling to dist
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
-    },
-    
-    mode: 'development',
-    
-    //Loaders
-    module: {
-        rules: [
-          {
-            test: /\.(js|jsx)$/,
-            exclude: /(node_modules|bower_components)/,
-            use: {
-              loader: 'babel-loader'
-            }
-          },
-          {
-            test: /\.html$/,
-            use: {
-              loader: 'html-loader'
-            }
-          },
-          {
-            test: /\.scss$/,
-            use: [
-                "style-loader", // creates style nodes from JS strings
-                "css-loader", // translates CSS into CommonJS
-                "sass-loader" // compiles Sass to CSS, using Node Sass by default
-            ]
-          }
-        ]
+  entry: "./src/index.js",
+  mode: "development",
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: "babel-loader",
+        options: { presets: ["@babel/env"] }
       },
-
-      plugins: [
-          new htmlWebpackPlugin({
-              template: "./src/index.html",
-              filename: "./index.html"
-          })
-      ],
-
-      //webpack-dev-server
-      devServer: {
-          port: 3000
+      {
+        test: /\.scss$/,
+        use: [
+            "style-loader", // creates style nodes from JS strings
+            "css-loader", // translates CSS into CommonJS
+            "sass-loader" // compiles Sass to CSS, using Node Sass by default
+        ]
       }
+    ]
+  },
+  resolve: { extensions: ["*", ".js", ".jsx"] },
+  output: {
+    path: path.resolve(__dirname, "dist/"),
+    publicPath: "/dist/",
+    filename: "bundle.js"
+  },
+  devServer: {
+    contentBase: path.join(__dirname, "public/"),
+    port: 3000,
+    publicPath: "http://localhost:3000/dist/",
+    hotOnly: true
+  },
+  plugins: [new webpack.HotModuleReplacementPlugin()]
 };
