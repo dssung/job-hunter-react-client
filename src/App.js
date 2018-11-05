@@ -1,12 +1,16 @@
-import React, { Component} from "react";
+import React, {Component} from "react";
 import {hot} from "react-hot-loader";
 import "./style.scss";
+
+
+//Components
+import MyJobsDashboard from './Components/MyJobsDashboard'
 
 class App extends Component{
   render(){
     return(
-      <div className="App">
-        <h1> Hello, World Fucks! </h1>
+      <div className = 'App'>
+        <MyJobsDashboard/>
       </div>
     );
   }
