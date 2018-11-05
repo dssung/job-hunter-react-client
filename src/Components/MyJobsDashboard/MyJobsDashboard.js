@@ -1,11 +1,10 @@
 import React from "react";
 import {hot} from "react-hot-loader";
-import {Grid, Row, Col} from "react-bootstrap";
 import JobPanel from './JobPanel';
 import JobDetails from './JobDetails';
-import ApiClient from '../api-client';
+import ApiClient from '../../api-client';
 
-class MyJobsDashBoard extends React.Component{
+class MyJobsDashboard extends React.Component{
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -15,7 +14,6 @@ class MyJobsDashBoard extends React.Component{
 				error: null
 		}
 	}
-
 
 	componentDidMount(){
 		ApiClient.get('/jobs')
@@ -57,12 +55,10 @@ class MyJobsDashBoard extends React.Component{
 						let job = jobs[i];
 						
 						allPanels.push(
-								<Col xs={6} md={4} key = {i}>
-										<JobPanel
-												index = {i}
-												setCurrJob = {this.handlePanelClick.bind(this)}
-												job = {job}/>
-								</Col>
+							<JobPanel
+								key = {i}
+								setCurrJob = {this.handlePanelClick.bind(this)}
+								job = {job}/>
 						);
 					}
 					
@@ -73,22 +69,18 @@ class MyJobsDashBoard extends React.Component{
 
 	render(){
 		return (
-			<Grid>
-				<Row>
-					<Col md={8}>
-						<Row className="show-grid">
-								{this.renderPanels()}
-						</Row>
-					</Col>
-					
-					<Col md = {4}>
-						<JobDetails
-							job = {this.state.currJob}/>
-					</Col>
-				</Row>
-			</Grid>
+			<div className = "my-jobs-container">
+				<div className = 'job-dashboard'>
+					{this.renderPanels()}
+				</div>
+				
+				<div className = 'job-details'>
+					<JobDetails
+								job = {this.state.currJob}/>
+				</div>
+			</div>
 		);  
 	} 
 }
 
-export default hot(module)(MyJobsDashBoard);
+export default hot(module)(MyJobsDashboard);
