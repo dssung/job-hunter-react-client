@@ -4,6 +4,9 @@ import JobPanel from './JobPanel';
 import JobDetails from './JobDetails';
 import ApiClient from '../../api-client';
 
+import {Card} from '@material-ui/core';
+import AddJobModal from './AddJobModal';
+
 class MyJobsDashboard extends React.Component{
 	constructor(props) {
 		super(props);
@@ -11,7 +14,7 @@ class MyJobsDashboard extends React.Component{
 				jobs: [],
 				currJob: null,
 				isLoaded: false,
-				error: null
+				error: null,
 		}
 	}
 
@@ -33,12 +36,10 @@ class MyJobsDashboard extends React.Component{
 
 
 	handlePanelClick(job){
-			this.setState({
-					currJob: job
-			});
+			this.setState({ currJob: job});
 	}
 
-
+	
 	renderPanels(){
 			const { error, isLoaded, jobs } = this.state;
 
@@ -72,12 +73,16 @@ class MyJobsDashboard extends React.Component{
 			<div className = "my-jobs-container">
 				<div className = 'job-dashboard'>
 					{this.renderPanels()}
+						<Card className = "add-job-button">
+							<AddJobModal>
+							</AddJobModal>
+						</Card>					
 				</div>
 				
 				<div className = 'job-details'>
-					<JobDetails
-								job = {this.state.currJob}/>
+					<JobDetails job = {this.state.currJob}/>
 				</div>
+
 			</div>
 		);  
 	} 

@@ -31,6 +31,16 @@
     grid-area: "job-dashboard"
 }
 
+.add-job-button{
+    display: flex;
+    border-style: dashed; 
+    border-color: #edeeef;
+    justify-content: center;
+    height: 100%;
+    justify-self: stretch;
+    align-items: center;
+}
+
 .job-detail {
     grid-area: "job-detail"
 }
