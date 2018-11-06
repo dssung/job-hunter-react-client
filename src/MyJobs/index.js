@@ -1,30 +1,37 @@
-import React from "react";
-import {hot} from "react-hot-loader";
+import React from 'react';
+import {hot} from 'react-hot-loader';
+import {Card} from '@material-ui/core';
+//Components
 import JobPanel from './Components/JobPanel';
 import JobDetails from './Components/JobDetails';
-import ApiClient from './api-client';
-
-import {Card} from '@material-ui/core';
 import AddJobModal from './Components/AddJobModal';
-import "./style.css";
+
+import ApiClient from './api-client';
+import './style.css';
 
 class MyJobsDashboard extends React.Component{
 	constructor(props) {
 		super(props);
+		
 		this.state = {
 				jobs: [],
-				currJob: null,
+				detailKey: null,
 				isLoaded: false,
 				error: null,
 		}
 	}
 
+	componentDidMount(){
+		this.getJobs();
+	}
+
+	//GET request for all jobs, set to state
 	getJobs(){
 		ApiClient.get('/jobs')
 			.then(response => {
 				this.setState({
 						isLoaded: true,
-						jobs: response.data
+						jobs: response.data,
 				});
 			})
 			.catch(error => {
@@ -35,60 +42,57 @@ class MyJobsDashboard extends React.Component{
 			});
 	}
 
-	componentDidMount(){
-		this.getJobs();
+	handlePanelClick(i){
+			this.setState({ 
+				detailKey: i,
+			});
 	}
 
-
-	handlePanelClick(job){
-			this.setState({ currJob: job});
-	}
-
-	
+	//Renders all job panels
 	renderPanels(){
-			const { error, isLoaded, jobs } = this.state;
+			const {error, isLoaded, jobs} = this.state;
 
 			if (error){
 				return <div>Error: {error.message}</div>
-			
+
 			} else if (!isLoaded){
 					return <div>Loading...</div>
 			
 			} else {
 					let allPanels = [];
 					
-					for (let i = 0 ; i < jobs.length; i++){
+					for (let i in jobs){
 						let job = jobs[i];
 						
 						allPanels.push(
 							<JobPanel
 								key = {i}
-								setCurrJob = {this.handlePanelClick.bind(this)}
-								job = {job}/>
+								onClick = {this.handlePanelClick.bind(this, i)}
+								job = {job}
+							/>
 						);
 					}
-					
 					return allPanels;
 			}
 	}
 	
-	
 	render(){
 		return (
-			<div className = "my-jobs-container">
+			<div className = 'my-jobs-container'>
 				<div className = 'job-dashboard'>
 					{this.renderPanels()}
-						<Card className = "add-job-button">
-							<AddJobModal
-								update = {this.getJobs.bind(this)}>
-							</AddJobModal>
-						</Card>					
+					
+					<Card className = 'add-job-button'>
+						<AddJobModal updateJobs = {this.getJobs.bind(this)}/>
+					</Card>					
 				</div>
 				
 				<div className = 'job-details'>
-					<JobDetails job = {this.state.currJob}/>
+					<JobDetails 
+						job = {this.state.jobs[this.state.detailKey]}
+						updateJobs = {this.getJobs.bind(this)}
+					/>
 				</div>
-
 			</div>
 		);  
 	} 

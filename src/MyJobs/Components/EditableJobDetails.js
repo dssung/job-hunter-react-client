@@ -1,43 +1,128 @@
-import React from "react";
-import {hot} from "react-hot-loader";
-import {Select, MenuItem, Button, Icon, Paper} from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit'
+import React from 'react';
+import {hot} from 'react-hot-loader';
+import {MenuItem, Button, TextField} from '@material-ui/core';
+import ApiClient from '../api-client';
 
+const status = [
+  {
+    value: 'INTERESTED',
+    label: 'Interested',
+  },
+  {
+    value: 'APPLIED',
+    label: 'Applied',
+  },
+  {
+    value: 'IN_PROGRESS',
+    label: 'In Progress',
+  },
+  {
+    value: 'REJECTED',
+    label: 'Rejected',
+  },
+];
 
-class JobDetails extends React.Component{
+class EditJobDetails extends React.Component{
+	constructor(props){
+		super(props);
+		
+		this.state = {
+			job: {...this.props.job},
+		}
+	}
+	
+	handleChange(name){
+    let newValue = event.target.value;
 
-    render(){
-        if (this.props.job == null){
-            return <h2>Select job</h2>
-        }
-        
-        return (
-            <div>
-							<Paper className = 'job-detail-paper'>
-								<h3><b>{this.props.job.company}</b></h3>
-								<h5>{this.props.job.position}</h5>
-								<h5>{this.props.job.location}</h5>	
+    if (name === 'status')
+      newValue = event.target.dataset.value;
 
-								<Button 
-									mini 
-									variant="fab" 
-									color="secondary" 
-									aria-label="Edit">
-										<Icon><EditIcon/></Icon>
-								</Button>
+    let updateJob = this.state.job;
+    updateJob[name] = newValue;
+    
+    this.setState({
+      job: updateJob
+		});
+  }
+	
+	handleSaveClick(){
+		ApiClient.put(`/jobs/${this.state.job._id}`, this.state.job)
+			.then(response => {
+				this.props.updateJobs();
+			}).catch(error => {
+				console.log(error);
+			});
+			
+			this.props.close();
+	}
 
-								<Select
-										value = {this.props.job.status}
+	handleCancelClick(){
+		this.props.close();
+	}
+
+	render(){
+			if (this.props.job == null)
+					return <h2>Select job</h2>
+
+			let job = this.state.job;
+			
+			return (
+				<div className = 'modal-container'>
+						<TextField
+							label = 'Company'
+							value = {job.company}
+							onChange = {this.handleChange.bind(this, 'company')}
+							margin = 'normal'
+						/>
+
+						<TextField
+							label = 'Position'
+							value = {job.position}
+							onChange = {this.handleChange.bind(this, 'position')}
+							margin = 'normal'
+						/>
+
+						<TextField
+							label = 'location'
+							value = {job.location}
+							onChange = {this.handleChange.bind(this, 'location')}
+							margin = 'normal'
+						/>
+
+						<TextField
+							select
+							label = 'Status'
+							className = 'add-job-field'
+							value = {job.status}
+							onChange = {this.handleChange.bind(this, 'status')}
+							margin = 'normal'
+						>
+							{status.map(option => (
+								<MenuItem 
+									key = {option.value}
+									value={option.value}
 								>
-										<MenuItem value={'INTERESTED'}>Interested</MenuItem>
-										<MenuItem value={'APPLIED'}>Applied</MenuItem>
-										<MenuItem value={'IN PROGRESS'}>In Progress</MenuItem>
-										<MenuItem value={'REJECTED'}>Rejected</MenuItem>
-								</Select>	
-							</Paper>
-            </div>
-        );  
-    }
+									{option.label}
+								</MenuItem>
+							))}
+						</TextField>
+
+						<Button 
+							variant = 'contained' 
+							color = 'primary'
+							onClick = {this.handleSaveClick.bind(this)}>
+							Save
+						</Button>
+
+						<Button 
+							variant = 'contained' 
+							color = 'secondary'
+							onClick = {this.handleCancelClick.bind(this)}>
+							Cancel
+						</Button>
+				</div>
+		);  
+	}
 }
 
-export default hot(module)(JobDetails);
+export default hot(module)(EditJobDetails);

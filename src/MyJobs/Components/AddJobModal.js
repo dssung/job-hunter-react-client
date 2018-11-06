@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Button, Paper, TextField, MenuItem} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {hot} from "react-hot-loader";
+import {hot} from 'react-hot-loader';
 import ApiClient from '../api-client';
 
 const status = [
@@ -70,7 +70,7 @@ class AddJobModal extends React.Component {
           }
         })
 
-        this.props.update();
+        this.props.updateJobs();
       })
       .catch (error => {
         console.log(error);
@@ -98,9 +98,9 @@ class AddJobModal extends React.Component {
     return (
       <div>
         <Button 
-          mini variant="fab" 
-          color="primary" 
-          aria-label="Add"
+          mini variant='fab' 
+          color='primary' 
+          aria-label='Add'
           onClick = {this.handleOpen.bind(this)}
         >
           <AddIcon/>
@@ -117,36 +117,36 @@ class AddJobModal extends React.Component {
           </h2>
 
           <TextField
-            label = "Company"
+            label = 'Company'
             className = 'add-job-field'
             value = {job.company}
             onChange = {this.handleChange.bind(this, 'company')}
-            margin = "normal"
+            margin = 'normal'
           />
 
           <TextField
-            label = "Position"
+            label = 'Position'
             className = 'add-job-field'
             value = {job.position}
             onChange = {this.handleChange.bind(this, 'position')}
-            margin = "normal"
+            margin = 'normal'
           />
 
           <TextField
-            label = "Location"
+            label = 'Location'
             className = 'add-job-field'
             value = {job.location}
             onChange = {this.handleChange.bind(this, 'location')}
-            margin = "normal"
+            margin = 'normal'
           />
 
           <TextField
             select
-            label="Status"
+            label='Status'
             className = 'add-job-field'
             value={job.status}
             onChange={this.handleChange.bind(this, 'status')}
-            margin="normal"
+            margin='normal'
           >
             {status.map(option => (
               <MenuItem key={option.value} value={option.value}>
@@ -156,15 +156,15 @@ class AddJobModal extends React.Component {
           </TextField>
 
           <Button 
-            variant="contained" 
-            color="primary"
+            variant='contained' 
+            color='primary'
             onClick = {this.handleAddClick.bind(this)}>
             Add Job
           </Button>
 
           <Button 
-            variant="contained" 
-            color="secondary"
+            variant='contained' 
+            color='secondary'
             onClick = {this.handleClose.bind(this)}>
             Cancel
           </Button>
