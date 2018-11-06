@@ -1,11 +1,12 @@
 import React from "react";
 import {hot} from "react-hot-loader";
-import JobPanel from './JobPanel';
-import JobDetails from './JobDetails';
-import ApiClient from '../../api-client';
+import JobPanel from './Components/JobPanel';
+import JobDetails from './Components/JobDetails';
+import ApiClient from './api-client';
 
 import {Card} from '@material-ui/core';
-import AddJobModal from './AddJobModal';
+import AddJobModal from './Components/AddJobModal';
+import "./style.css";
 
 class MyJobsDashboard extends React.Component{
 	constructor(props) {
@@ -18,7 +19,7 @@ class MyJobsDashboard extends React.Component{
 		}
 	}
 
-	componentDidMount(){
+	getJobs(){
 		ApiClient.get('/jobs')
 			.then(response => {
 				this.setState({
@@ -32,6 +33,10 @@ class MyJobsDashboard extends React.Component{
 					error
 				});
 			});
+	}
+
+	componentDidMount(){
+		this.getJobs();
 	}
 
 
@@ -67,14 +72,15 @@ class MyJobsDashboard extends React.Component{
 			}
 	}
 	
-
+	
 	render(){
 		return (
 			<div className = "my-jobs-container">
 				<div className = 'job-dashboard'>
 					{this.renderPanels()}
 						<Card className = "add-job-button">
-							<AddJobModal>
+							<AddJobModal
+								update = {this.getJobs.bind(this)}>
 							</AddJobModal>
 						</Card>					
 				</div>

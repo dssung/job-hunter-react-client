@@ -1,21 +1,3 @@
-.App {
-    display: grid;
-    height: 100%;
-    grid-template-columns: 100%;
-    grid-template-rows: 20% 80%;
-    grid-gap: 1px 1px;
-    grid-template-areas: "nav-bar" "app-page";
-}
-
-.nav-bar{
-    grid-area: 'nav-bar';
-}
-
-.app-page{
-    grid-area: 'app-page';
-}
-
-
 .my-jobs-container {
     display: grid;
     height: 100%;
@@ -43,5 +25,18 @@
 
 .job-detail {
     grid-area: "job-detail"
+}
+
+.modal-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-job-field {
+    order: 0;
+}
+
+.job-detail-paper{
+
 }
 

@@ -1,0 +1,16 @@
+.App {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 100%;
+  grid-template-rows: 10% 90%;
+  grid-gap: 1px 1px;
+  grid-template-areas: "nav-bar" "app-page";
+}
+
+.nav-bar{
+  grid-area: 'nav-bar';
+}
+
+.app-page{
+  grid-area: 'app-page';
+}
