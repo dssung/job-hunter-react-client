@@ -43,7 +43,7 @@ class EditJobDetails extends React.Component{
     this.setState({
       job: updateJob
 		});
-  }
+	}
 	
 	handleSaveClick(){
 		ApiClient.put(`/jobs/${this.state.job._id}`, this.state.job)
@@ -51,13 +51,25 @@ class EditJobDetails extends React.Component{
 				this.props.updateJobs();
 			}).catch(error => {
 				console.log(error);
+			}).then(() => {
+				this.props.close();
 			});
-			
-			this.props.close();
+	}
+
+	handleDeleteClick(){
+		ApiClient.delete(`/jobs/${this.state.job._id}`)
+			.then(response => {
+				this.props.updateJobs();
+			}).catch(error => {
+				console.log(error);
+				this.props.close();
+			}).then(()=>{
+				this.props.close();
+			});
 	}
 
 	handleCancelClick(){
-		this.props.close();
+		this.props.close()
 	}
 
 	render(){
@@ -67,59 +79,77 @@ class EditJobDetails extends React.Component{
 			let job = this.state.job;
 			
 			return (
-				<div className = 'modal-container'>
-						<TextField
-							label = 'Company'
-							value = {job.company}
-							onChange = {this.handleChange.bind(this, 'company')}
-							margin = 'normal'
-						/>
+				<div className = 'editable-job-container'>
+						<div className = 'editable-job-body'>
+							<h3> Update Job </h3>
 
-						<TextField
-							label = 'Position'
-							value = {job.position}
-							onChange = {this.handleChange.bind(this, 'position')}
-							margin = 'normal'
-						/>
+							<TextField
+								label = 'Company'
+								value = {job.company}
+								onChange = {this.handleChange.bind(this, 'company')}
+								margin = 'normal'
+							/>
 
-						<TextField
-							label = 'location'
-							value = {job.location}
-							onChange = {this.handleChange.bind(this, 'location')}
-							margin = 'normal'
-						/>
+							<TextField
+								label = 'Position'
+								value = {job.position}
+								onChange = {this.handleChange.bind(this, 'position')}
+								margin = 'normal'
+							/>
 
-						<TextField
-							select
-							label = 'Status'
-							className = 'add-job-field'
-							value = {job.status}
-							onChange = {this.handleChange.bind(this, 'status')}
-							margin = 'normal'
-						>
-							{status.map(option => (
-								<MenuItem 
-									key = {option.value}
-									value={option.value}
-								>
-									{option.label}
-								</MenuItem>
-							))}
-						</TextField>
+							<TextField
+								label = 'location'
+								value = {job.location}
+								onChange = {this.handleChange.bind(this, 'location')}
+								margin = 'normal'
+							/>
 
-						<Button 
-							variant = 'contained' 
-							color = 'primary'
-							onClick = {this.handleSaveClick.bind(this)}>
-							Save
-						</Button>
+							<TextField
+								select
+								label = 'Status'
+								className = 'add-job-field'
+								value = {job.status}
+								onChange = {this.handleChange.bind(this, 'status')}
+								margin = 'normal'
+							>
+								{status.map(option => (
+									<MenuItem 
+										key = {option.value}
+										value={option.value}
+									>
+										{option.label}
+									</MenuItem>
+								))}
+							</TextField>
 
-						<Button 
-							variant = 'contained' 
-							color = 'secondary'
-							onClick = {this.handleCancelClick.bind(this)}>
-							Cancel
-						</Button>
+							<div className = 'editable-job-actions'>
+								<Button
+									className = 'editable-job-button'
+									variant = 'contained' 
+									color = 'primary'
+									onClick = {this.handleSaveClick.bind(this)}>
+									Save
+								</Button>
+
+								<Button
+									className = 'editable-job-button' 
+									variant = 'contained' 
+									color = 'secondary'
+									onClick = {this.handleDeleteClick.bind(this)}>
+									Delete
+								</Button>
+
+								<Button 
+									className = 'editable-job-button'
+									variant = 'outlined' 
+									color = 'secondary'
+									onClick = {this.handleCancelClick.bind(this)}>
+									Cancel
+								</Button>
+							</div>
+						</div>
+
+						
 				</div>
 		);  
 	}

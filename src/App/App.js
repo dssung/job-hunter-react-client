@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {hot} from "react-hot-loader";
-import "./style.css";
+import "./style.scss";
 
 //Components
 import AppPage from './AppPage'
@@ -10,7 +10,7 @@ class App extends Component{
   render(){
     return(
       <div className = 'App'>
-        <NavBar className = 'nav-bar' />
+        <NavBar className = 'nav-bar'/>
         <AppPage className = 'app-page'/>
       </div>
     );

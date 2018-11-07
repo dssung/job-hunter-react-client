@@ -46,23 +46,33 @@ class JobDetails extends React.Component{
 
 		if (this.state.editable === false){
 			return (
-				<div>
-					<h3><b>{job.company}</b></h3>
-					<h5>{job.position}</h5>
-					<h5>{job.location}</h5>	
+				<div className = 'job-detail'>
+					<div className = 'job-detail-header'>
+						<h3><b>{job.company}</b></h3>
 
-					<Button 
-						mini 
-						variant = 'fab' 
-						color = 'secondary' 
-						aria-label = 'Edit'
-						onClick = {this.handleEditClick.bind(this)}>
-							<Icon><EditIcon/></Icon>
-					</Button>
+						<Button 
+							mini 
+							variant = 'fab' 
+							color = 'secondary' 
+							aria-label = 'Edit'
+							className = 'edit-button'
+							onClick = {this.handleEditClick.bind(this)}>
+								<Icon><EditIcon/></Icon>
+						</Button>
+					</div>
+
+					<div className = 'job-detail-body'>
+						<h5>
+								{job.position}
+								<br/>
+								{job.location}
+						</h5>
+					</div>
 
 					<br/>
 
 					<Select 
+						className = 'status-select'
 						value = {job.status} 
 						onChange = {this.handleSelectChange.bind(this)}
 					>

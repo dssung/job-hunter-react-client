@@ -4,7 +4,7 @@ import moment from 'moment';
 import {Card, CardContent, CardActions, Chip} from '@material-ui/core';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
 
-class JobPanel extends React.Component{
+class JobTile extends React.Component{
 	constructor(props){
 		super(props);
 	}
@@ -21,7 +21,10 @@ class JobPanel extends React.Component{
 		let {company, location, position, created_date} = this.props.job;
 		
 		return (
-			<Card onClick = {this.onClick.bind(this)}>
+			<Card 
+				onClick = {this.onClick.bind(this)}
+				className = {this.props.className}
+			>
 				<CardContent>
 					<h4>{company}</h4>
 					<p>{position}</p>
@@ -39,4 +42,4 @@ class JobPanel extends React.Component{
 	}
 }
 
-export default hot(module)(JobPanel);
+export default hot(module)(JobTile);

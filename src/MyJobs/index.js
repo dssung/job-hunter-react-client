@@ -2,12 +2,12 @@ import React from 'react';
 import {hot} from 'react-hot-loader';
 import {Card} from '@material-ui/core';
 //Components
-import JobPanel from './Components/JobPanel';
-import JobDetails from './Components/JobDetails';
+import JobTile from './Components/JobTile';
+import JobDetail from './Components/JobDetail';
 import AddJobModal from './Components/AddJobModal';
 
 import ApiClient from './api-client';
-import './style.css';
+import './style.scss';
 
 class MyJobsDashboard extends React.Component{
 	constructor(props) {
@@ -59,13 +59,15 @@ class MyJobsDashboard extends React.Component{
 					return <div>Loading...</div>
 			
 			} else {
+				
 					let allPanels = [];
 					
 					for (let i in jobs){
 						let job = jobs[i];
-						
+
 						allPanels.push(
-							<JobPanel
+							<JobTile
+								className = {(this.state.detailKey === i) ? 'selected-tile' : ''}
 								key = {i}
 								onClick = {this.handlePanelClick.bind(this, i)}
 								job = {job}
@@ -79,7 +81,7 @@ class MyJobsDashboard extends React.Component{
 	render(){
 		return (
 			<div className = 'my-jobs-container'>
-				<div className = 'job-dashboard'>
+				<div className = 'job-dashboard-container'>
 					{this.renderPanels()}
 					
 					<Card className = 'add-job-button'>
@@ -87,8 +89,8 @@ class MyJobsDashboard extends React.Component{
 					</Card>					
 				</div>
 				
-				<div className = 'job-details'>
-					<JobDetails 
+				<div className = 'job-detail-container'>
+					<JobDetail
 						job = {this.state.jobs[this.state.detailKey]}
 						updateJobs = {this.getJobs.bind(this)}
 					/>
