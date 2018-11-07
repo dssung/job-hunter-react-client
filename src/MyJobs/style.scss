@@ -2,20 +2,15 @@
 .my-jobs-container {
     display: grid;
     height: 100%;
-    grid-template-columns: 67% 33%;    
-    grid-gap: 1px 1px;
+    grid-template-columns: repeat(auto-fit, 200px);  
+    grid-gap: 10px;
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
 }
 
-.job-dashboard-container {
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto-fit, 200px);
-    grid-area: "job-dashboard"
-}
 
+//Job Tiles
 .add-job-button{
     display: flex;
     border-style: dashed; 
@@ -24,10 +19,6 @@
     height: 100%;
     justify-self: stretch;
     align-items: center;
-}
-
-.add-job-field {
-    order: 0;
 }
 
 .selected-tile {
@@ -39,7 +30,6 @@
 }
 
 //Job Detail
-
 .job-detail-container{
     flex-flow: column nowrap;
     justify-content: space-evenly;

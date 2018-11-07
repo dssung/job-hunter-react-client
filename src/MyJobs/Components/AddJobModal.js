@@ -38,12 +38,11 @@ class AddJobModal extends React.Component {
     }
   }
 
-
-  handleOpen(){
-    this.setState({open: true});
+  handleOpenClick(){
+    this.setState({ open: true });
   };
 
-
+  //Set state.job to empty
   handleClose(){
     this.setState({
       job: {
@@ -56,27 +55,17 @@ class AddJobModal extends React.Component {
     });
   }
 
-
+  //POST then update jobs
   handleAddClick(){
     ApiClient.post('/jobs', this.state.job)
       .then((response) => {
-        this.setState({
-          open: false,
-          job: {
-            company: '',
-            position: '',
-            location: '',
-            status: 'INTERESTED'
-          }
-        })
-
+        this.handleClose();
         this.props.updateJobs();
       })
       .catch (error => {
         console.log(error);
       });
   }
-
 
   handleChange(name){
     let newValue = event.target.value;
@@ -92,87 +81,80 @@ class AddJobModal extends React.Component {
     });
   }
 
-
   render(){
     let job = this.state.job;
     return (
-      <div>
+      <>
         <Button 
           mini variant='fab' 
           color='primary' 
           aria-label='Add'
-          onClick = {this.handleOpen.bind(this)}
+          onClick = {this.handleOpenClick.bind(this)}
         >
           <AddIcon/>
         </Button>
         
+        {/*Modal is hidden until button is click*/}
         <Modal
           open = {this.state.open}
           onClose = {this.handleClose.bind(this)}
         >
-
           <Paper className = 'modal-container'>
-          <h2>
-            Add New Job
-          </h2>
+            <h2>
+              Add New Job
+            </h2>
 
-          <TextField
-            label = 'Company'
-            className = 'add-job-field'
-            value = {job.company}
-            onChange = {this.handleChange.bind(this, 'company')}
-            margin = 'normal'
-          />
+            <TextField
+              label = 'Company'
+              value = {job.company}
+              onChange = {this.handleChange.bind(this, 'company')}
+              margin = 'normal'
+            />
 
-          <TextField
-            label = 'Position'
-            className = 'add-job-field'
-            value = {job.position}
-            onChange = {this.handleChange.bind(this, 'position')}
-            margin = 'normal'
-          />
+            <TextField
+              label = 'Position'
+              value = {job.position}
+              onChange = {this.handleChange.bind(this, 'position')}
+              margin = 'normal'
+            />
 
-          <TextField
-            label = 'Location'
-            className = 'add-job-field'
-            value = {job.location}
-            onChange = {this.handleChange.bind(this, 'location')}
-            margin = 'normal'
-          />
+            <TextField
+              label = 'Location'
+              value = {job.location}
+              onChange = {this.handleChange.bind(this, 'location')}
+              margin = 'normal'
+            />
 
-          <TextField
-            select
-            label='Status'
-            className = 'add-job-field'
-            value={job.status}
-            onChange={this.handleChange.bind(this, 'status')}
-            margin='normal'
-          >
-            {status.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+            <TextField
+              select
+              label='Status'
+              value={job.status}
+              onChange={this.handleChange.bind(this, 'status')}
+              margin='normal'
+            >
+              {status.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
 
-          <Button 
-            variant='contained' 
-            color='primary'
-            onClick = {this.handleAddClick.bind(this)}>
-            Add Job
-          </Button>
+            <Button 
+              variant='contained' 
+              color='primary'
+              onClick = {this.handleAddClick.bind(this)}>
+              Add Job
+            </Button>
 
-          <Button 
-            variant='contained' 
-            color='secondary'
-            onClick = {this.handleClose.bind(this)}>
-            Cancel
-          </Button>
-
+            <Button 
+              variant='contained' 
+              color='secondary'
+              onClick = {this.handleClose.bind(this)}>
+              Cancel
+            </Button>
           </Paper>
         </Modal>
-
-      </div>
+      </>
     );
   }
 }

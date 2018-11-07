@@ -4,13 +4,32 @@ import moment from 'moment';
 import {Card, CardContent, CardActions, Chip} from '@material-ui/core';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
 
+import JobDetailModal from './JobDetailModal';
+
 class JobTile extends React.Component{
 	constructor(props){
 		super(props);
+
+		this.state = {
+			job: this.props.job,
+			key: this.props.key,
+			open: false
+		};
 	}
 
-	onClick(){
-		this.props.onClick(this.props.job)
+	componentWillReceiveProps(nextProps){
+		this.setState({
+			job: nextProps.job,
+			key: nextProps.key
+		});
+	}
+
+	handleClick(){
+		this.setState({ open: true });
+	}
+
+	handleClose(){
+		this.setState({ open: false });
 	}
 
 	formatDate(date){
@@ -18,26 +37,35 @@ class JobTile extends React.Component{
 	}
 
 	render(){
-		let {company, location, position, created_date} = this.props.job;
+		let {company, location, position, created_date, status} = this.state.job;
 		
 		return (
-			<Card 
-				onClick = {this.onClick.bind(this)}
-				className = {this.props.className}
-			>
-				<CardContent>
-					<h4>{company}</h4>
-					<p>{position}</p>
-					<p>{location}</p>
-				</CardContent>
+			<>
+				<Card 
+					onClick = {this.handleClick.bind(this)}
+				>
+					<CardContent>
+						<h4>{company}</h4>
+						<p>{position}</p>
+						<p>{location}</p>
+						<p>{status}</p>
+					</CardContent>
 
-				<CardActions>
-					<Chip
-						label = {this.formatDate(created_date)}
-						icon = {<CalendarIcon/>}
-					/>
-				</CardActions>
-			</Card>
+					<CardActions>
+						<Chip
+							label = {this.formatDate(created_date)}
+							icon = {<CalendarIcon/>}
+						/>
+					</CardActions>
+				</Card>
+
+				<JobDetailModal
+					open = {this.state.open}
+					handleClose = {this.handleClose.bind(this)}
+					job = {this.state.job}
+					updateJobs = {this.props.updateJobs}
+				/>
+			</>
 		);  
 	}
 }

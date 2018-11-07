@@ -22,7 +22,7 @@ const status = [
   },
 ];
 
-class EditJobDetails extends React.Component{
+class EditJobDetailModal extends React.Component{
 	constructor(props){
 		super(props);
 		
@@ -52,7 +52,7 @@ class EditJobDetails extends React.Component{
 			}).catch(error => {
 				console.log(error);
 			}).then(() => {
-				this.props.close();
+				this.props.close(false);
 			});
 	}
 
@@ -62,14 +62,13 @@ class EditJobDetails extends React.Component{
 				this.props.updateJobs();
 			}).catch(error => {
 				console.log(error);
-				this.props.close();
 			}).then(()=>{
-				this.props.close();
+				this.props.close(true);
 			});
 	}
 
 	handleCancelClick(){
-		this.props.close()
+		this.props.close(false)
 	}
 
 	render(){
@@ -107,7 +106,6 @@ class EditJobDetails extends React.Component{
 							<TextField
 								select
 								label = 'Status'
-								className = 'add-job-field'
 								value = {job.status}
 								onChange = {this.handleChange.bind(this, 'status')}
 								margin = 'normal'
@@ -147,12 +145,10 @@ class EditJobDetails extends React.Component{
 									Cancel
 								</Button>
 							</div>
-						</div>
-
-						
+						</div>	
 				</div>
 		);  
 	}
 }
 
-export default hot(module)(EditJobDetails);
+export default hot(module)(EditJobDetailModal);
